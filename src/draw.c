@@ -1,7 +1,9 @@
 #include "raylib.h"
 #include "types.h"
+#include "input.h"
 #include "DrawTextureTiled.h"
 #include "draw.h"
+#include <stdio.h>
 
 void draw_tiling_background(Texture tile, Texture noise) {
 	Rectangle source_rectangle = (Rectangle){0, 0, 50, 50};
@@ -19,33 +21,49 @@ void draw_tiling_background(Texture tile, Texture noise) {
 void draw_status_bar(app_state_t app_state) {
 		Rectangle status_bar_background = {.x = 0, .y = 750, .width = 1200, .height=50};
 		DrawRectangleRec(status_bar_background, DARKGRAY);
-		DrawText((char *)(&(app_state.input_mode)), 25, 765, 20, WHITE);
+		
+        DrawText((char *)(&(app_state.input_mode)), 25, 765, 20, WHITE);
+
+        char fps_str[8];
+        sprintf(fps_str, "%d fps", GetFPS());
+        DrawText(fps_str, 60, 765, 20, WHITE);
 }
 
 void draw_wire(Vector2 start, Vector2 end) {
-    // TODO change me so wires are parallel/perpendicular w/grid
-    DrawLineEx(Vector2AddValue(start, 3), Vector2AddValue(end, 3), 5, HOVER_SHADOW);
-    DrawLineEx(start, end, 5, LIGHTGRAY);
+    // swap anchors to produce opposite snapping
+    // for later - experiment with other types of snapping
+    Vector2 delta = Vector2Subtract(end, start);
+    Vector2 anchor;
+    if ((delta.x > 0 && delta.y <= 0 ) || (delta.y > 0 && delta.x <= 0 )) 
+    {
+        anchor = (Vector2){start.x, end.y}; 
+    } 
+    else 
+    {
+           
+        anchor = (Vector2){end.x, start.y};
+    }
+    DrawLineEx(Vector2AddValue(start, 3), Vector2AddValue(anchor, 3), 5, HOVER_SHADOW);
+    DrawLineEx(Vector2AddValue(anchor, 3), Vector2AddValue(end, 3), 5, HOVER_SHADOW);
+    DrawLineEx(start, anchor, 5, LIGHTGRAY);
+    DrawLineEx(anchor, end, 5, LIGHTGRAY);
 }
 
 void draw_component(Texture component, bool rotation) {
 
     DrawTexturePro(component, (Rectangle){0.0f, 0.0f, component.width, component.height}, 
-    (Rectangle){GetMouseX()+3, GetMouseY()+3, component.width, component.height}, 
+    (Rectangle){get_snapped_mouse_x()+3, get_snapped_mouse_y()+3, component.width, component.height}, 
     (Vector2){(component.width / 2.0f), (component.height / 2.0f)},
     rotation*90.0f,
     HOVER_SHADOW
     );
 
     DrawTexturePro(component, (Rectangle){0.0f, 0.0f, component.width, component.height}, 
-    (Rectangle){GetMouseX(), GetMouseY(), component.width, component.height}, 
+    (Rectangle){get_snapped_mouse_x(), get_snapped_mouse_y(), component.width, component.height}, 
     (Vector2){(component.width / 2.0f), (component.height / 2.0f)},
     rotation*90.0f,
     LIGHTGRAY
     );
-
-    // DrawTextureEx(component, (Vector2){GetMouseX() - centre.x + 3, GetMouseY() - centre.y + 3}, (float)(rotation*90) , 1.0f, HOVER_SHADOW);
-    // DrawTextureEx(component, (Vector2){GetMouseX() - centre.x, GetMouseY() - centre.y }, (float)(rotation*90) , 1.0f, LIGHTGRAY); 
 }
 
 void draw_app(app_state_t app_state, textures_t textures) {
@@ -65,7 +83,6 @@ void draw_app(app_state_t app_state, textures_t textures) {
             // use isource as cursor
             draw_component(textures.isource, app_state.component_rotation);
         }
-
 
         draw_status_bar(app_state);
 }

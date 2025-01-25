@@ -1,8 +1,10 @@
 #include "textures.h"
 #include "types.h"
+#include "resource_dir.h" // utility header for SearchAndSetResourceDir
 
 void load_textures(textures_t* textures)
 {	
+    SearchAndSetResourceDir("resources");
 	textures->checker = LoadTexture("checker.png");
     textures->vsource = LoadTexture("vsource.png");
     textures->isource = LoadTexture("isource.png");

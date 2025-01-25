@@ -9,6 +9,9 @@
 		"**/*.exe": true,
 	},
 	"files.associations": {
-		"types.h": "c"
+		"types.h": "c",
+		"textures.h": "c",
+		"input.h": "c",
+		"draw.h": "c"
 	}
 }

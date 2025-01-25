@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "raymath.h"
-#include "resource_dir.h" // utility header for SearchAndSetResourceDir
 #include "types.h" // custom types & functions for dealing with them
 #include "init.h" // initialisation functions
 #include "textures.h" // texture loading
@@ -13,8 +12,6 @@ int main()
 	SetConfigFlags( FLAG_VSYNC_HINT );
 
 	InitWindow(1200, 800, "ceres");
-
-	SearchAndSetResourceDir("resources");
 
 	app_state_t app_state;
 	init_app_state(&app_state);

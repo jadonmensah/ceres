@@ -2,6 +2,16 @@
 #include "types.h"
 #include "input.h"
 
+int get_snapped_mouse_x () 
+{
+	return ((GetMouseX() / 50) * 50) + 25;
+}
+
+int get_snapped_mouse_y ()
+{
+	return ((GetMouseY() / 50) * 50) + 25;
+}
+
 void handle_inputs(app_state_t* app_state)
 {
 	if (IsKeyDown(KEY_X))
@@ -55,15 +65,15 @@ void handle_inputs(app_state_t* app_state)
 
 	if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && app_state->input_mode == IM_WIRE && !app_state->dragging_wire)
 	{
-		app_state->wire_drag_start.x = GetMouseX();
-		app_state->wire_drag_start.y = GetMouseY();
+		app_state->wire_drag_start.x = get_snapped_mouse_x();
+		app_state->wire_drag_start.y = get_snapped_mouse_y();
 		app_state->dragging_wire = true;
 	}
 
 	if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && app_state->dragging_wire)
 	{
-		app_state->wire_drag_end.x = GetMouseX();
-		app_state->wire_drag_end.y = GetMouseY();
+		app_state->wire_drag_end.x = get_snapped_mouse_x();
+		app_state->wire_drag_end.y = get_snapped_mouse_y();
 	}
 
 	if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && app_state->dragging_wire)
@@ -82,8 +92,8 @@ void handle_inputs(app_state_t* app_state)
 	{
 		render_info_t render_info;
 		render_info.component = (component_t)(app_state->input_mode);
-		render_info.position.x = GetMouseX();
-		render_info.position.y = GetMouseY();
+		render_info.position.x = get_snapped_mouse_x();
+		render_info.position.y = get_snapped_mouse_y();
 		// enqueue(render_info, app_state.render_queue, &app_state.head_render_queue, &app_state.tail_render_queue, SZ_RENDER_QUEUE);
 	}
 }
