@@ -3,7 +3,7 @@
 #include "DrawTextureTiled.h"
 #pragma once
 
-void draw_tiling_background(Texture tile);
+void draw_tiling_background(Texture tile, Texture noise);
 
 void draw_status_bar(app_state_t app_state);
 

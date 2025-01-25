@@ -1,8 +1,11 @@
-// custom types & functions to deal with them
+// custom types, constants & functions to deal with them
 #include "raylib.h"
 #include "raymath.h"
 #define SZ_RENDER_QUEUE 8
 #pragma once
+
+#define HOVER_SHADOW CLITERAL(Color){80, 80, 80, 190}
+
 
 typedef enum // characters for display purposes
 {
@@ -48,6 +51,9 @@ typedef struct
 typedef struct
 {
     Texture checker;
+    Texture vsource;
+    Texture noise;
+    Texture isource;
 } textures_t;
 
 bool is_placement_mode(input_mode_t input_mode);

@@ -10,7 +10,7 @@
 int main()
 {
 
-	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+	SetConfigFlags( FLAG_VSYNC_HINT );
 
 	InitWindow(1200, 800, "ceres");
 
