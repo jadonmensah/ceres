@@ -28,6 +28,26 @@ void draw_wire(Vector2 start, Vector2 end) {
     DrawLineEx(start, end, 5, LIGHTGRAY);
 }
 
+void draw_component(Texture component, bool rotation) {
+
+    DrawTexturePro(component, (Rectangle){0.0f, 0.0f, component.width, component.height}, 
+    (Rectangle){GetMouseX()+3, GetMouseY()+3, component.width, component.height}, 
+    (Vector2){(component.width / 2.0f), (component.height / 2.0f)},
+    rotation*90.0f,
+    HOVER_SHADOW
+    );
+
+    DrawTexturePro(component, (Rectangle){0.0f, 0.0f, component.width, component.height}, 
+    (Rectangle){GetMouseX(), GetMouseY(), component.width, component.height}, 
+    (Vector2){(component.width / 2.0f), (component.height / 2.0f)},
+    rotation*90.0f,
+    LIGHTGRAY
+    );
+
+    // DrawTextureEx(component, (Vector2){GetMouseX() - centre.x + 3, GetMouseY() - centre.y + 3}, (float)(rotation*90) , 1.0f, HOVER_SHADOW);
+    // DrawTextureEx(component, (Vector2){GetMouseX() - centre.x, GetMouseY() - centre.y }, (float)(rotation*90) , 1.0f, LIGHTGRAY); 
+}
+
 void draw_app(app_state_t app_state, textures_t textures) {
 		draw_tiling_background(textures.checker, textures.noise);
 
@@ -38,14 +58,12 @@ void draw_app(app_state_t app_state, textures_t textures) {
         
         if (app_state.input_mode == IM_VSOURCE) {
             // use vsource as cursor
-            DrawTexture(textures.vsource, GetMouseX() - 22, GetMouseY() - 22, HOVER_SHADOW);
-            DrawTexture(textures.vsource, GetMouseX() - 25, GetMouseY() - 25, LIGHTGRAY); 
+            draw_component(textures.vsource, app_state.component_rotation);
         }
 
         if (app_state.input_mode == IM_ISOURCE) {
-            // use vsource as cursor
-            DrawTexture(textures.isource, GetMouseX() - 47, GetMouseY() - 22, HOVER_SHADOW);
-            DrawTexture(textures.isource, GetMouseX() - 50, GetMouseY() - 25, LIGHTGRAY); 
+            // use isource as cursor
+            draw_component(textures.isource, app_state.component_rotation);
         }
 
 

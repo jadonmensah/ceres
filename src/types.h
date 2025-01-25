@@ -45,6 +45,7 @@ typedef struct
     render_info_t *render_queue[SZ_RENDER_QUEUE];
     int head_render_queue;
     int tail_render_queue;
+    bool component_rotation; // false = no rotation, true = 90 deg (due to rotational symmetry this is all we need.)
 
 } app_state_t;
 

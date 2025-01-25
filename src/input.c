@@ -49,6 +49,10 @@ void handle_inputs(app_state_t* app_state)
 		app_state->input_mode = IM_MEASURE;
 	}
 
+	if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_DOWN) ||  IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT)) {
+		app_state->component_rotation = !app_state->component_rotation; // rotational symmetry
+	}
+
 	if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && app_state->input_mode == IM_WIRE && !app_state->dragging_wire)
 	{
 		app_state->wire_drag_start.x = GetMouseX();
