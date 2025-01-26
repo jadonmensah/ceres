@@ -90,19 +90,19 @@ void handle_inputs(app_state_t* app_state)
 
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && app_state->input_mode == IM_DELETE)
 	{
-		// TODO implement me!
-		// Look up component at mouse position
-		// Clear screen area covered by component
+		app_state->component_grid[get_cursor_grid_index()].active = false;
 	}
 
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && is_placement_mode(app_state->input_mode))
 	{
-		render_info_t render_info;
-		render_info.active = true;
-		render_info.component = (component_t)(app_state->input_mode);
-		render_info.position.x = get_snapped_mouse_x();
-		render_info.position.y = get_snapped_mouse_y();
-		render_info.rotation = app_state->component_rotation;
-		app_state->component_grid[get_cursor_grid_index()] = render_info;
+		if (!app_state->component_grid[get_cursor_grid_index()].active) {	
+			render_info_t render_info;
+			render_info.active = true;
+			render_info.component = (component_t)(app_state->input_mode);
+			render_info.position.x = get_snapped_mouse_x();
+			render_info.position.y = get_snapped_mouse_y();
+			render_info.rotation = app_state->component_rotation;
+			app_state->component_grid[get_cursor_grid_index()] = render_info;
+		}
 	}
 }
