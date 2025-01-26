@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "types.h"
 #include "input.h"
+#include "textures.h"
 #include "DrawTextureTiled.h"
 #include "draw.h"
 #include <stdio.h>
@@ -18,11 +19,11 @@ void draw_tiling_background(Texture tile, Texture noise) {
     DrawRectangleGradientH(1150, 0, 50, 750, (Color){0,0,0,0}, (Color){0,0,0,30});
 }
 
-void draw_status_bar(app_state_t app_state) {
+void draw_status_bar(app_state_t* app_state) {
 		Rectangle status_bar_background = {.x = 0, .y = 750, .width = 1200, .height=50};
 		DrawRectangleRec(status_bar_background, DARKGRAY);
 		
-        DrawText((char *)(&(app_state.input_mode)), 25, 765, 20, WHITE);
+        DrawText((char *)(&(app_state->input_mode)), 25, 765, 20, WHITE);
 
         char fps_str[8];
         sprintf(fps_str, "%d fps", GetFPS());
@@ -49,40 +50,54 @@ void draw_wire(Vector2 start, Vector2 end) {
     DrawLineEx(anchor, end, 5, LIGHTGRAY);
 }
 
-void draw_component(Texture component, bool rotation) {
+void draw_component(Texture component, Vector2 position, bool rotation) {
 
     DrawTexturePro(component, (Rectangle){0.0f, 0.0f, component.width, component.height}, 
-    (Rectangle){get_snapped_mouse_x()+3, get_snapped_mouse_y()+3, component.width, component.height}, 
+    (Rectangle){position.x+3, position.y+3, component.width, component.height}, 
     (Vector2){(component.width / 2.0f), (component.height / 2.0f)},
     rotation*90.0f,
     HOVER_SHADOW
     );
 
     DrawTexturePro(component, (Rectangle){0.0f, 0.0f, component.width, component.height}, 
-    (Rectangle){get_snapped_mouse_x(), get_snapped_mouse_y(), component.width, component.height}, 
+    (Rectangle){position.x, position.y, component.width, component.height}, 
     (Vector2){(component.width / 2.0f), (component.height / 2.0f)},
     rotation*90.0f,
     LIGHTGRAY
     );
 }
 
-void draw_app(app_state_t app_state, textures_t textures) {
-		draw_tiling_background(textures.checker, textures.noise);
+void draw_component_grid(render_info_t* component_grid, textures_t* textures) {
+    for (int i = 0; i < SZ_COMPONENT_GRID; i++) {
+        if (component_grid[i].active) {
+            draw_component(
+            get_component_texture(component_grid[i].component, textures), 
+            (Vector2){(i % 24)*50+25,(i/24)*50+25}, 
+            component_grid[i].rotation); 
+        }  
+    }
+}
 
-		if (app_state.dragging_wire)
+void draw_app(app_state_t* app_state, textures_t* textures) {
+		draw_tiling_background(textures->checker, textures->noise);
+
+		if (app_state->dragging_wire)
 		{
-			draw_wire(app_state.wire_drag_start, app_state.wire_drag_end);
+			draw_wire(app_state->wire_drag_start, app_state->wire_drag_end);
 		}
         
-        if (app_state.input_mode == IM_VSOURCE) {
+
+        if (app_state->input_mode == IM_VSOURCE) {
             // use vsource as cursor
-            draw_component(textures.vsource, app_state.component_rotation);
+            draw_component(textures->vsource, (Vector2){get_snapped_mouse_x(), get_snapped_mouse_y()}, app_state->component_rotation);
         }
 
-        if (app_state.input_mode == IM_ISOURCE) {
+        if (app_state->input_mode == IM_ISOURCE) {
             // use isource as cursor
-            draw_component(textures.isource, app_state.component_rotation);
+            draw_component(textures->isource, (Vector2){get_snapped_mouse_x(), get_snapped_mouse_y()}, app_state->component_rotation);
         }
+
+        draw_component_grid(app_state->component_grid, textures);
 
         draw_status_bar(app_state);
 }

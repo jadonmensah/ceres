@@ -24,7 +24,7 @@ int main()
 		handle_inputs(&app_state);
 		BeginDrawing();
 		ClearBackground(BLACK);
-		draw_app(app_state, textures);		
+		draw_app(&app_state, &textures);		
 		EndDrawing();
 	}
 

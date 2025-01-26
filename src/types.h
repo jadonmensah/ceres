@@ -1,7 +1,7 @@
 // custom types, constants & functions to deal with them
 #include "raylib.h"
 #include "raymath.h"
-#define SZ_RENDER_QUEUE 8
+#define SZ_COMPONENT_GRID 360 // 360 = 24 * 15 = (1200/50) * (750/50). Circuit area is 1200 by 750px
 #pragma once
 
 #define HOVER_SHADOW CLITERAL(Color){80, 80, 80, 190}
@@ -22,18 +22,22 @@ typedef enum // characters for display purposes
 
 typedef enum
 {
-    C_WIRE,
-    C_RESISTOR,
-    C_CAPACITOR,
-    C_INDUCTOR,
-    C_ISOURCE,
-    C_VSOURCE,
-    C_GROUND,
+    C_WIRE = 'w',
+    C_RESISTOR = 'r',
+    C_CAPACITOR = 'c',
+    C_INDUCTOR = 'l',
+    C_ISOURCE = 'i',
+    C_VSOURCE = 'v',
+    C_GROUND = 'g',
+    C_NULL = '-',
 } component_t;
+
 typedef struct
 {
+    bool active;
     component_t component;
     Vector2 position;
+    bool rotation;
 } render_info_t;
 
 typedef struct
@@ -42,9 +46,8 @@ typedef struct
     bool dragging_wire;
     Vector2 wire_drag_start;
     Vector2 wire_drag_end;
-    render_info_t *render_queue[SZ_RENDER_QUEUE];
-    int head_render_queue;
-    int tail_render_queue;
+    render_info_t component_grid[SZ_COMPONENT_GRID];
+    // 
     bool component_rotation; // false = no rotation, true = 90 deg (due to rotational symmetry this is all we need.)
 
 } app_state_t;

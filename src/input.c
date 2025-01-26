@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "types.h"
 #include "input.h"
+#include <stdio.h>
 
 int get_snapped_mouse_x () 
 {
@@ -10,6 +11,12 @@ int get_snapped_mouse_x ()
 int get_snapped_mouse_y ()
 {
 	return ((GetMouseY() / 50) * 50) + 25;
+}
+
+int get_cursor_grid_index ()
+{
+	printf("%d\n", ((GetMouseY() / 50) * 24) + (GetMouseX() / 50) );
+	return ((GetMouseY() / 50) * 24) + (GetMouseX() / 50);
 }
 
 void handle_inputs(app_state_t* app_state)
@@ -91,9 +98,11 @@ void handle_inputs(app_state_t* app_state)
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && is_placement_mode(app_state->input_mode))
 	{
 		render_info_t render_info;
+		render_info.active = true;
 		render_info.component = (component_t)(app_state->input_mode);
 		render_info.position.x = get_snapped_mouse_x();
 		render_info.position.y = get_snapped_mouse_y();
-		// enqueue(render_info, app_state.render_queue, &app_state.head_render_queue, &app_state.tail_render_queue, SZ_RENDER_QUEUE);
+		render_info.rotation = app_state->component_rotation;
+		app_state->component_grid[get_cursor_grid_index()] = render_info;
 	}
 }
