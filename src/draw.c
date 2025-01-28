@@ -87,14 +87,9 @@ void draw_app(app_state_t* app_state, textures_t* textures) {
 		}
         
 
-        if (app_state->input_mode == IM_VSOURCE) {
+        if (is_placement_mode(app_state->input_mode)) {
             // use vsource as cursor
-            draw_component(textures->vsource, (Vector2){get_snapped_mouse_x(), get_snapped_mouse_y()}, app_state->component_rotation);
-        }
-
-        if (app_state->input_mode == IM_ISOURCE) {
-            // use isource as cursor
-            draw_component(textures->isource, (Vector2){get_snapped_mouse_x(), get_snapped_mouse_y()}, app_state->component_rotation);
+            draw_component(get_component_texture((component_t)(app_state->input_mode), textures), (Vector2){get_snapped_mouse_x(), get_snapped_mouse_y()}, app_state->component_rotation);
         }
 
         draw_component_grid(app_state->component_grid, textures);

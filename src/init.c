@@ -11,6 +11,4 @@ void init_app_state(app_state_t* app_state)
 	app_state->wire_drag_end.x = 0;
 	app_state->wire_drag_end.y = 0;
 	memset(app_state->component_grid, 0, SZ_COMPONENT_GRID*sizeof(render_info_t));
-	
-	
 }

@@ -36,7 +36,6 @@ typedef struct
 {
     bool active;
     component_t component;
-    Vector2 position;
     bool rotation;
 } render_info_t;
 
@@ -56,6 +55,10 @@ typedef struct
 {
     Texture checker;
     Texture vsource;
+    Texture resistor;
+    Texture capacitor;
+    Texture ground;
+    Texture inductor;
     Texture noise;
     Texture isource;
 } textures_t;

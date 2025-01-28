@@ -15,7 +15,6 @@ int get_snapped_mouse_y ()
 
 int get_cursor_grid_index ()
 {
-	printf("%d\n", ((GetMouseY() / 50) * 24) + (GetMouseX() / 50) );
 	return ((GetMouseY() / 50) * 24) + (GetMouseX() / 50);
 }
 
@@ -99,8 +98,6 @@ void handle_inputs(app_state_t* app_state)
 			render_info_t render_info;
 			render_info.active = true;
 			render_info.component = (component_t)(app_state->input_mode);
-			render_info.position.x = get_snapped_mouse_x();
-			render_info.position.y = get_snapped_mouse_y();
 			render_info.rotation = app_state->component_rotation;
 			app_state->component_grid[get_cursor_grid_index()] = render_info;
 		}

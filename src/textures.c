@@ -8,6 +8,10 @@ void load_textures(textures_t* textures)
 	textures->checker = LoadTexture("checker.png");
     textures->vsource = LoadTexture("vsource.png");
     textures->isource = LoadTexture("isource.png");
+    textures->resistor = LoadTexture("resistor.png");
+    textures->capacitor = LoadTexture("capacitor.png");
+    textures->ground = LoadTexture("ground.png");
+    textures->inductor = LoadTexture("inductor.png");
     textures->noise = LoadTextureFromImage(GenImageWhiteNoise(1200, 750, 0.994f));
 }
 
@@ -17,6 +21,14 @@ Texture get_component_texture(component_t component, textures_t* textures) {
             return textures->isource;
         case C_VSOURCE:
             return textures->vsource;
+        case C_RESISTOR:
+            return textures->resistor;
+        case C_CAPACITOR:
+            return textures->capacitor;
+        case C_INDUCTOR:
+            return textures->inductor;
+        case C_GROUND:
+            return textures->ground;
     };
 }
 
