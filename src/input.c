@@ -109,10 +109,12 @@ void handle_inputs(app_state_t* app_state)
 		app_state->dragging_wire = false;
 		Vector2 anchor = get_anchor(app_state->wire_drag_start, app_state->wire_drag_end);
 		bool met_anchor = false;
+		bool not_at_end = true;
 		int i = 0;
-		for(int cell = coords_to_grid_index(app_state->wire_drag_start); cell != coords_to_grid_index(app_state->wire_drag_end); cell = wire_next_cell(cell, anchor, app_state->wire_drag_end, met_anchor)) {
+		for(int cell = coords_to_grid_index(app_state->wire_drag_start); not_at_end; cell = wire_next_cell(cell, anchor, app_state->wire_drag_end, met_anchor)) {
 			
 			if (cell == coords_to_grid_index(anchor)) met_anchor = true;
+			if (cell == coords_to_grid_index(app_state->wire_drag_end)) not_at_end = false; // so that the final wire cell is still drawn
 			render_info_t render_info;
 			render_info.active = true;
 			render_info.component = (component_t)(app_state->input_mode);
