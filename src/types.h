@@ -36,7 +36,7 @@ typedef struct
 {
     bool active;
     component_t component;
-    bool rotation;
+    char rotation;
 } render_info_t;
 
 typedef struct
@@ -47,7 +47,7 @@ typedef struct
     Vector2 wire_drag_end;
     render_info_t component_grid[SZ_COMPONENT_GRID];
     // 
-    bool component_rotation; // false = no rotation, true = 90 deg (due to rotational symmetry this is all we need.)
+    char component_rotation; 
 
 } app_state_t;
 

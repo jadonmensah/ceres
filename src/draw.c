@@ -30,27 +30,31 @@ void draw_status_bar(app_state_t* app_state) {
         DrawText(fps_str, 60, 765, 20, WHITE);
 }
 
-void draw_wire(Vector2 start, Vector2 end) {
-    // swap anchors to produce opposite snapping
-    // for later - experiment with other types of snapping
+Vector2 get_anchor(Vector2 start, Vector2 end) {
     Vector2 delta = Vector2Subtract(end, start);
-    Vector2 anchor;
     if ((delta.x > 0 && delta.y <= 0 ) || (delta.y > 0 && delta.x <= 0 )) 
     {
-        anchor = (Vector2){start.x, end.y}; 
+        return (Vector2){start.x, end.y}; 
     } 
     else 
     {
-           
-        anchor = (Vector2){end.x, start.y};
+        return (Vector2){end.x, start.y};
     }
+}
+void draw_wire(Vector2 start, Vector2 end) {
+    // swap anchors to produce opposite snapping
+    // for later - experiment with other types of snapping
+    
+    Vector2 anchor;
+    anchor = get_anchor(start, end);
     DrawLineEx(Vector2AddValue(start, 3), Vector2AddValue(anchor, 3), 5, HOVER_SHADOW);
     DrawLineEx(Vector2AddValue(anchor, 3), Vector2AddValue(end, 3), 5, HOVER_SHADOW);
     DrawLineEx(start, anchor, 5, LIGHTGRAY);
     DrawLineEx(anchor, end, 5, LIGHTGRAY);
+    
 }
 
-void draw_component(Texture component, Vector2 position, bool rotation) {
+void draw_component(Texture component, Vector2 position, char rotation) {
 
     DrawTexturePro(component, (Rectangle){0.0f, 0.0f, component.width, component.height}, 
     (Rectangle){position.x+3, position.y+3, component.width, component.height}, 
@@ -70,10 +74,15 @@ void draw_component(Texture component, Vector2 position, bool rotation) {
 void draw_component_grid(render_info_t* component_grid, textures_t* textures) {
     for (int i = 0; i < SZ_COMPONENT_GRID; i++) {
         if (component_grid[i].active) {
-            draw_component(
-            get_component_texture(component_grid[i].component, textures), 
-            (Vector2){(i % 24)*50+25,(i/24)*50+25}, 
-            component_grid[i].rotation); 
+            if (component_grid[i].component == C_WIRE) {
+                // for now just draw a red dot so we can debug algo
+                DrawLineEx((Vector2){(i % 24)*50+25,(i/24)*50+25}, (Vector2){(i % 24)*50+30,(i/24)*50+30}, 10, RED);
+            } else {
+                draw_component(
+                get_component_texture(component_grid[i].component, textures), 
+                (Vector2){(i % 24)*50+25,(i/24)*50+25}, 
+                component_grid[i].rotation);
+            } 
         }  
     }
 }
@@ -83,6 +92,7 @@ void draw_app(app_state_t* app_state, textures_t* textures) {
 
 		if (app_state->dragging_wire)
 		{
+            
 			draw_wire(app_state->wire_drag_start, app_state->wire_drag_end);
 		}
         

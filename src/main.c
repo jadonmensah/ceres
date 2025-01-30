@@ -5,8 +5,9 @@
 #include "textures.h" // texture loading
 #include "input.h" // input handling
 #include "draw.h" // frame drawing
+#include <stdio.h>
 
-// TODO: GUI: more component sprites, wire persistence, wires extend to component terminals, measure/multimeter mode
+// TODO: GUI: wire persistence, wires extend to component terminals, measure/multimeter mode
 // TODO: component grid to circuit MNA matrix & solve circuit
 // TODO: 
 
@@ -25,6 +26,7 @@ int main()
 
 	while (!WindowShouldClose())
 	{
+		
 		handle_inputs(&app_state);
 		BeginDrawing();
 		ClearBackground(BLACK);
