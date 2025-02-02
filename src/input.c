@@ -116,7 +116,7 @@ void handle_inputs(app_state_t* app_state)
 		app_state->wire_drag_end.y = get_snapped_mouse_y();
 		
 	}
-	if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && app_state->dragging_wire)
+	if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && app_state->dragging_wire) // this part is slowly becoming cursed you should fix it
 	{
 		
 		app_state->dragging_wire = false;
@@ -124,11 +124,18 @@ void handle_inputs(app_state_t* app_state)
 		bool met_anchor = false;
 		bool not_at_end = true;
 		char rotation  = 0;
-		if (anchor.x == app_state->wire_drag_start.x) {
+		// if the anchor and the start are the same then rotation should be determined based on end point and not anchor
+		if (coords_to_grid_index(anchor) == coords_to_grid_index(app_state->wire_drag_start)) {
+			if (app_state->wire_drag_end.x == app_state->wire_drag_start.x) {
+				rotation = 1;
+			}
+		}
+		else if (anchor.x == app_state->wire_drag_start.x) {
 			rotation = 1;
 		}
 		int i = 0;
 		for(int cell = coords_to_grid_index(app_state->wire_drag_start); not_at_end; cell = wire_next_cell(cell, anchor, app_state->wire_drag_end, met_anchor)) {
+			
 			if (cell == coords_to_grid_index(app_state->wire_drag_end)) not_at_end = false; // so that the final wire cell is still drawn
 			if (cell == coords_to_grid_index(anchor) 
 			&& coords_to_grid_index(anchor) != coords_to_grid_index(app_state->wire_drag_end)

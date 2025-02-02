@@ -7,9 +7,10 @@
 #include "draw.h" // frame drawing
 #include <stdio.h>
 
-// TODO: GUI: wire persistence, wires extend to component terminals, measure/multimeter mode
-// TODO: component grid to circuit MNA matrix & solve circuit
-// TODO: 
+// TODO: GUI: wires extend to component terminals or to form junctions, delete mode deletes entire wires instead of 
+// single cell
+// TODO: component grid to ngspice-compatible .cir file
+// TODO: get ngspice working in pipe mode so that the window doesnt open
 
 int main()
 {

@@ -18,9 +18,10 @@ typedef enum // characters for display purposes
     IM_GROUND = 'g',
     IM_MEASURE = 'm',
     IM_DELETE = 'x',
+    IM_JUNCTION = 'j',
 } input_mode_t;
 
-typedef enum // characters so we can cast between input_mode_t to component_t
+typedef enum // characters so we can cast between input_mode_t to component_t 
 {
     C_WIRE = 'w',
     C_CORNER_WIRE, // not directly placeable by user, used internally for drawing wires
