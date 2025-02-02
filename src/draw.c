@@ -76,7 +76,14 @@ void draw_component_grid(render_info_t* component_grid, textures_t* textures) {
         if (component_grid[i].active) {
             if (component_grid[i].component == C_WIRE) {
                 // for now just draw a red dot so we can debug algo
-                DrawLineEx((Vector2){(i % 24)*50+25,(i/24)*50+25}, (Vector2){(i % 24)*50+30,(i/24)*50+30}, 10, RED);
+                if (component_grid[i].rotation == 1) {
+                 
+                DrawLineEx((Vector2){(i % 24)*50+25,(i/24)*50+25}, (Vector2){(i % 24)*50+30,(i/24)*50+30}, 10, GREEN);
+               
+                } else {
+                 
+                DrawLineEx((Vector2){(i % 24)*50+25,(i/24)*50+25}, (Vector2){(i % 24)*50+30,(i/24)*50+30}, 10, RED);   
+                }
             } else {
                 draw_component(
                 get_component_texture(component_grid[i].component, textures), 

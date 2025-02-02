@@ -110,15 +110,21 @@ void handle_inputs(app_state_t* app_state)
 		Vector2 anchor = get_anchor(app_state->wire_drag_start, app_state->wire_drag_end);
 		bool met_anchor = false;
 		bool not_at_end = true;
+		char rotation  = 0;
+		if (anchor.x == app_state->wire_drag_start.x) {
+			rotation = 1;
+		}
 		int i = 0;
 		for(int cell = coords_to_grid_index(app_state->wire_drag_start); not_at_end; cell = wire_next_cell(cell, anchor, app_state->wire_drag_end, met_anchor)) {
-			
-			if (cell == coords_to_grid_index(anchor)) met_anchor = true;
+			if (cell == coords_to_grid_index(anchor) && coords_to_grid_index(anchor) != coords_to_grid_index(app_state->wire_drag_end)) {
+				met_anchor = true;
+				rotation = (rotation + 1) % 2;
+			} 
 			if (cell == coords_to_grid_index(app_state->wire_drag_end)) not_at_end = false; // so that the final wire cell is still drawn
 			render_info_t render_info;
 			render_info.active = true;
 			render_info.component = (component_t)(app_state->input_mode);
-			render_info.rotation = app_state->component_rotation;
+			render_info.rotation = rotation;
 			app_state->component_grid[cell] = render_info;
 			// failsafe so that we don't go on forever if the algorithm is buggy
 			i++;

@@ -20,9 +20,10 @@ typedef enum // characters for display purposes
     IM_DELETE = 'x',
 } input_mode_t;
 
-typedef enum
+typedef enum // characters so we can cast between input_mode_t to component_t
 {
     C_WIRE = 'w',
+    C_CORNER_WIRE, // not directly placeable by user, used internally for drawing wires
     C_RESISTOR = 'r',
     C_CAPACITOR = 'c',
     C_INDUCTOR = 'l',
