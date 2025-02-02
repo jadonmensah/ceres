@@ -62,6 +62,8 @@ typedef struct
     Texture inductor;
     Texture noise;
     Texture isource;
+    Texture wire_straight;
+    Texture wire_corner;
 } textures_t;
 
 bool is_placement_mode(input_mode_t input_mode);

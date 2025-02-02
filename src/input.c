@@ -38,6 +38,18 @@ int wire_next_cell(int cell, Vector2 anchor, Vector2 end, bool met_anchor) {
 	}
 }
 
+char get_quadrant(Vector2 v) {
+	if (v.x > 0 && v.y > 0) {
+		return 0;
+	} if (v.x <= 0 && v.y > 0) {
+		return 1;
+	} if (v.x <= 0 && v.y <= 0) {
+		return 2;
+	} if (v.x > 0 && v.y <= 0) {
+		return 3;
+	}
+}
+
 void handle_inputs(app_state_t* app_state)
 {
 	if (IsKeyDown(KEY_X))
@@ -106,6 +118,7 @@ void handle_inputs(app_state_t* app_state)
 	}
 	if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && app_state->dragging_wire)
 	{
+		// bug - wires drawn vertically up have wrong rotation
 		app_state->dragging_wire = false;
 		Vector2 anchor = get_anchor(app_state->wire_drag_start, app_state->wire_drag_end);
 		bool met_anchor = false;
@@ -116,16 +129,30 @@ void handle_inputs(app_state_t* app_state)
 		}
 		int i = 0;
 		for(int cell = coords_to_grid_index(app_state->wire_drag_start); not_at_end; cell = wire_next_cell(cell, anchor, app_state->wire_drag_end, met_anchor)) {
-			if (cell == coords_to_grid_index(anchor) && coords_to_grid_index(anchor) != coords_to_grid_index(app_state->wire_drag_end)) {
-				met_anchor = true;
-				rotation = (rotation + 1) % 2;
-			} 
 			if (cell == coords_to_grid_index(app_state->wire_drag_end)) not_at_end = false; // so that the final wire cell is still drawn
+			if (cell == coords_to_grid_index(anchor) 
+			&& coords_to_grid_index(anchor) != coords_to_grid_index(app_state->wire_drag_end)
+			&& coords_to_grid_index(anchor) != coords_to_grid_index(app_state->wire_drag_start)) {
+				met_anchor = true;
+				render_info_t render_info;
+				render_info.active = true;
+				render_info.component = C_CORNER_WIRE;
+				char quadrant_end = get_quadrant(Vector2Subtract(app_state->wire_drag_end, app_state->wire_drag_start));
+				render_info.rotation = quadrant_end; // quadrant end is in wrt start is the rotation of this guy
+				app_state->component_grid[cell] = render_info;
+				rotation = (rotation + 1) % 2;
+			} else {
+				if (coords_to_grid_index(anchor) == coords_to_grid_index(app_state->wire_drag_start)) {
+					met_anchor = true;
+				}
+				
 			render_info_t render_info;
 			render_info.active = true;
 			render_info.component = (component_t)(app_state->input_mode);
 			render_info.rotation = rotation;
 			app_state->component_grid[cell] = render_info;
+			}
+			
 			// failsafe so that we don't go on forever if the algorithm is buggy
 			i++;
 			if (i > 100) {printf("max its exceeded\n"); break;}

@@ -12,7 +12,9 @@ void load_textures(textures_t* textures)
     textures->capacitor = LoadTexture("capacitor.png");
     textures->ground = LoadTexture("ground.png");
     textures->inductor = LoadTexture("inductor.png");
+    textures->wire_straight = LoadTexture("wire_straight.png");
     textures->noise = LoadTextureFromImage(GenImageWhiteNoise(1200, 750, 0.994f));
+    textures->wire_corner = LoadTexture("wire_corner.png");
 }
 
 Texture get_component_texture(component_t component, textures_t* textures) {
@@ -29,6 +31,10 @@ Texture get_component_texture(component_t component, textures_t* textures) {
             return textures->inductor;
         case C_GROUND:
             return textures->ground;
+        case C_WIRE:
+            return textures->wire_straight;
+        case C_CORNER_WIRE:
+            return textures->wire_corner;
     };
 }
 
@@ -36,6 +42,13 @@ void unload_textures(textures_t* textures)
 {
 	UnloadTexture(textures->checker);
     UnloadTexture(textures->vsource);
+    UnloadTexture(textures->resistor);
+    UnloadTexture(textures->inductor);
+    UnloadTexture(textures->ground);
+    UnloadTexture(textures->capacitor);
     UnloadTexture(textures->noise);
     UnloadTexture(textures->isource);
+    UnloadTexture(textures->wire_straight);
+    UnloadTexture(textures->wire_corner);
+
 }
