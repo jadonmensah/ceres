@@ -118,7 +118,7 @@ void handle_inputs(app_state_t* app_state)
 	}
 	if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && app_state->dragging_wire)
 	{
-		// bug - wires drawn vertically up have wrong rotation
+		
 		app_state->dragging_wire = false;
 		Vector2 anchor = get_anchor(app_state->wire_drag_start, app_state->wire_drag_end);
 		bool met_anchor = false;

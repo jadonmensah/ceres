@@ -15,6 +15,8 @@ void load_textures(textures_t* textures)
     textures->wire_straight = LoadTexture("wire_straight.png");
     textures->noise = LoadTextureFromImage(GenImageWhiteNoise(1200, 750, 0.994f));
     textures->wire_corner = LoadTexture("wire_corner.png");
+    textures->wire_tjunction = LoadTexture("wire_tjunction.png");
+    textures->wire_xjunction = LoadTexture("wire_xjunction.png");
 }
 
 Texture get_component_texture(component_t component, textures_t* textures) {
@@ -35,6 +37,10 @@ Texture get_component_texture(component_t component, textures_t* textures) {
             return textures->wire_straight;
         case C_CORNER_WIRE:
             return textures->wire_corner;
+        case C_T_JUNCTION:
+            return textures->wire_tjunction;
+        case C_X_JUNCTION:
+            return textures->wire_xjunction;
     };
 }
 

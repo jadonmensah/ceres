@@ -31,6 +31,8 @@ typedef enum // characters so we can cast between input_mode_t to component_t
     C_VSOURCE = 'v',
     C_GROUND = 'g',
     C_NULL = '-',
+    C_T_JUNCTION,
+    C_X_JUNCTION,
 } component_t;
 
 typedef struct
@@ -64,6 +66,8 @@ typedef struct
     Texture isource;
     Texture wire_straight;
     Texture wire_corner;
+    Texture wire_tjunction;
+    Texture wire_xjunction;
 } textures_t;
 
 bool is_placement_mode(input_mode_t input_mode);
