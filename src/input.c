@@ -6,12 +6,26 @@
 
 int get_snapped_mouse_x () 
 {
-	return ((GetMouseX() / 50) * 50) + 25;
+	int res = (((GetMouseX() / 50) * 50) + 25 );
+	if (res < 0) {
+		res = 25;
+	}
+	if (res > 1200) {
+		res = 1175;
+	}
+	return res;
 }
 
 int get_snapped_mouse_y ()
 {
-	return ((GetMouseY() / 50) * 50) + 25;
+	int res = (((GetMouseY() / 50) * 50) + 25);
+	if (res < 0) {
+		res = 25;
+	}
+	if (res > 750) {
+		res = 725;
+	}
+	return res;
 }
 
 int get_cursor_grid_index ()
