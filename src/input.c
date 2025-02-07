@@ -151,11 +151,42 @@ void handle_inputs(app_state_t* app_state)
 			} else {
 				if (coords_to_grid_index(anchor) == coords_to_grid_index(app_state->wire_drag_start)) {
 					met_anchor = true;
-				}
-				
+			}
 			render_info_t render_info;
 			render_info.active = true;
-			render_info.component = (component_t)(app_state->input_mode);
+			
+			// If we're overwriting another wire with different rotation and this is not the end/start, place an X junction
+			if (app_state->component_grid[cell].active 
+			&& (app_state->component_grid[cell].rotation == (rotation + 1)% 2)
+			&& (app_state->component_grid[cell].component == C_WIRE || app_state->component_grid[cell].component == C_T_JUNCTION)
+			&& not_at_end && cell != coords_to_grid_index(app_state->wire_drag_start)) {
+				render_info.component = C_X_JUNCTION;
+			}
+			else if (app_state->component_grid[cell].active 
+			&& (app_state->component_grid[cell].rotation == (rotation + 1)% 2)
+			&& (app_state->component_grid[cell].component == C_WIRE
+			&& (!not_at_end || cell == coords_to_grid_index(app_state->wire_drag_start))))
+			{
+				render_info.component = C_T_JUNCTION;
+				if (app_state->component_grid[cell].rotation == 0) {
+					if (anchor.y <= grid_index_to_coords(cell).y) {
+						rotation = 1;
+					} else {
+						rotation = 3;
+					}
+				} else {
+					if (anchor.x >= grid_index_to_coords(cell).x) {
+						rotation = 2;
+					} else {
+						rotation = 0;
+					}
+				}
+				printf("r:%d\n", rotation);
+			}
+			 
+			else {
+				render_info.component = (component_t)(app_state->input_mode);
+			}
 			render_info.rotation = rotation;
 			app_state->component_grid[cell] = render_info;
 			}
