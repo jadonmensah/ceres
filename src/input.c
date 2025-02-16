@@ -195,7 +195,6 @@ void handle_inputs(app_state_t* app_state)
 						rotation = 0;
 					}
 				}
-				printf("r:%d\n", rotation);
 			}
 			 
 			else {
