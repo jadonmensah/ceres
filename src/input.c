@@ -2,6 +2,7 @@
 #include "types.h"
 #include "input.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "draw.h"
 
 int get_snapped_mouse_x () 
@@ -109,6 +110,8 @@ void handle_inputs(app_state_t* app_state)
 	if (IsKeyDown(KEY_M))
 	{
 		app_state->input_mode = IM_MEASURE;
+		// Attempt to simulate circuit. For now just dummy run ngspice
+		system("ngspice_con.exe -p -b rc-meas-ac.sp > plswork.txt");
 	}
 
 	if (IsKeyPressed(KEY_UP) ||  IsKeyPressed(KEY_RIGHT)) {
@@ -118,6 +121,7 @@ void handle_inputs(app_state_t* app_state)
 	if (IsKeyPressed(KEY_DOWN) ||IsKeyPressed(KEY_LEFT)) {
 		app_state->component_rotation = (app_state->component_rotation - 1) % 4;
 	}
+	
 	if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && app_state->input_mode == IM_WIRE && !app_state->dragging_wire)
 	{
 		app_state->wire_drag_start.x = get_snapped_mouse_x();
@@ -224,6 +228,5 @@ void handle_inputs(app_state_t* app_state)
 			app_state->component_grid[get_cursor_grid_index()] = render_info;
 		}
 	}
-	
     
 }
